@@ -6,22 +6,14 @@ class Grid extends Component{
   componentDidMount(){
     let canvas = findDOMNode(this.refs.canvas),
       ctx = canvas.getContext("2d");
-    let xx=0, yy=0;
-    ctx.beginPath();
-    for(let j=0;j<10; j++){
-     for(let i=0; i < 10; i++){
-      ctx.moveTo(xx,yy);
-      xx += 40;
-      ctx.lineTo(xx,yy);
-      yy += 40;
-      ctx.lineTo(xx,yy);
-      xx -= 40;
-      ctx.lineTo(xx,yy);
+    const squares=Array(100);
+    for(let i = 0; i < 10; i++){
+      for(let j = 0; j < 10; j++) squares.push([i*40,j*40])
     }
-    yy=0;
-    xx += 40;
-  }
-    ctx.stroke();
+    squares.forEach(square=>{
+      ctx.beginPath();
+      ctx.strokeRect(square[0],square[1],40,40)
+    })
   }
   render(){
     return(
