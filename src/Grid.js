@@ -30,6 +30,7 @@ class Grid extends Component{
     var d= +(a+""+b);
     this.setState(prevState=>{prevState.squares[d][2]=true; return {squares:prevState.squares}});
     ct.fillText(this.props.nextMove,event.clientX,event.clientY);
+    this.props.onClick();
     console.log(d,this.state.squares[d][2]);
 
   }
