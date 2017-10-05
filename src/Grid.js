@@ -19,8 +19,8 @@ class Grid extends Component{
     this.state.squares.forEach(square=>{
       ct.beginPath();
       ct.strokeRect(square[0],square[1],40,40)
-    })
-    this.setState({ctx: ct})
+    });
+    this.setState({ctx: ct});
   }
   handleClick(event){
     var c = findDOMNode(this.refs.canvas);
@@ -29,7 +29,7 @@ class Grid extends Component{
     var b= ~~((event.clientX-c.getBoundingClientRect().left)/40);
     var d= +(a+""+b);
     this.setState(prevState=>{prevState.squares[d][2]=true; return {squares:prevState.squares}});
-    ct.fillText("X",event.clientX,event.clientY);
+    ct.fillText(this.props.nextMove,event.clientX,event.clientY);
     console.log(d,this.state.squares[d][2]);
 
   }
