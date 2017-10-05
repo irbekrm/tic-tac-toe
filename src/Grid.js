@@ -8,7 +8,7 @@ class Grid extends Component{
     this.handleClick = this.handleClick.bind(this);
     this.state = {squares: (_=>{var s=[];
       for(let i = 0; i < 10; i++){
-        for(let j = 0; j< 10; j++) s.push([i*40,j*40,false])
+        for(let j = 0; j< 10; j++) s.push([i*40,j*40,""])
       }; return s})(),
       ctx: null
   }
@@ -28,10 +28,10 @@ class Grid extends Component{
     var a = ~~((event.clientY-c.getBoundingClientRect().top)/40);
     var b= ~~((event.clientX-c.getBoundingClientRect().left)/40);
     var d= +(a+""+b);
-    this.setState(prevState=>{prevState.squares[d][2]=true; return {squares:prevState.squares}});
+    this.setState(prevState=>{prevState.squares[d][2]=this.props.nextMove; return {squares:prevState.squares}});
     ct.fillText(this.props.nextMove,event.clientX,event.clientY);
+    this.props.check(this.state.squares,d,this.props.nextMove);
     this.props.onClick();
-    console.log(d,this.state.squares[d][2]);
 
   }
   render(){
