@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Grid from './Grid.js';
+import Score from './Score.js';
 
 class Game extends Component{
   constructor(props){
@@ -9,7 +10,8 @@ class Game extends Component{
     this.state={next:"",
       winner:"",
       width:13,
-      height:13};
+      height:13,
+      score:{"x":0,"o":0}};
   }
   componentDidMount(){
     this.setState({next:(()=>Math.round(Math.random())?"X":"O")()})
@@ -33,17 +35,14 @@ class Game extends Component{
   var four=mapper(b4).concat(v,mapper(e4)).join("");
   var reg=RegExp(`${v}{5}`);
   var winner=reg.test(one)||reg.test(two)||reg.test(three)||reg.test(four);
-  if(winner) {this.setState({winner:v})}
-  console.log(x,`uB2:${b2} B2:${mapper(b2)} uE2:${e2} E2:${mapper(e2)} uB3: ${b3} B3:${mapper(b3)} uE3:${e3} E3:${mapper(e3)}ONE:${one}`);
-
-  console.log(`WINNER: ${winner} FOUR: ${four} THREE: ${three} TWO: ${two} ONE: ${one}`);
-
+  if(winner) {this.setState({next:"",winner:v})}
     }
   render(){
     return(
       <div>
         <p>Next move: {this.state.next}</p>
         <p>Winner: {this.state.winner}</p>
+        <Score x={this.state.score.x} o={this.state.score.o}/>
         <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
           width={this.state.width} height={this.state.height}/>
       </div>

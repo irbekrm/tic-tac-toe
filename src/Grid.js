@@ -33,8 +33,8 @@ class Grid extends Component{
     if(!(this.state.squares[d][2]||this.props.winner)){
       this.setState(prevState=>{prevState.squares[d][2]=this.props.nextMove; return {squares:prevState.squares}});
       ct.fillText(this.props.nextMove,b*40+17,a*40+25);
-      this.props.check(this.state.squares,d,this.props.nextMove);
       this.props.onClick();
+      this.props.check(this.state.squares,d,this.props.nextMove);
     }
   }
   reset(){
