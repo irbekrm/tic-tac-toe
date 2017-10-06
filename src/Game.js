@@ -11,7 +11,7 @@ class Game extends Component{
       winner:"",
       width:13,
       height:13,
-      score:{"x":0,"o":0}};
+      score:{"X":0,"O":0}};
   }
   componentDidMount(){
     this.setState({next:(()=>Math.round(Math.random())?"X":"O")()})
@@ -35,14 +35,16 @@ class Game extends Component{
   var four=mapper(b4).concat(v,mapper(e4)).join("");
   var reg=RegExp(`${v}{5}`);
   var winner=reg.test(one)||reg.test(two)||reg.test(three)||reg.test(four);
-  if(winner) {this.setState({next:"",winner:v})}
-    }
+  if(winner) {this.setState(prevState=>{let x=prevState.score; x[v]+=1;return {
+    next:"",winner:v,score: x}})};
+  console.log(`v: ${v}, this.state.score: ${this.state.score}, this.state.score[v]: ${this.state.score[v]}`)
+};
   render(){
     return(
       <div>
         <p>Next move: {this.state.next}</p>
         <p>Winner: {this.state.winner}</p>
-        <Score x={this.state.score.x} o={this.state.score.o}/>
+        <Score x={this.state.score.X} o={this.state.score.O}/>
         <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
           width={this.state.width} height={this.state.height}/>
       </div>
