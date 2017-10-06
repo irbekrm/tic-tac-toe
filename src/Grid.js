@@ -7,8 +7,8 @@ class Grid extends Component{
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {squares: (_=>{var s=[];
-      for(let i = 0; i < 10; i++){
-        for(let j = 0; j< 10; j++) s.push([i*40,j*40,""])
+      for(let i = 0; i < this.props.width; i++){
+        for(let j = 0; j< this.props.height; j++) s.push([i*40,j*40,""])
       }; return s})(),
       ctx: null
   }
@@ -27,8 +27,7 @@ class Grid extends Component{
     var ct = c.getContext("2d");
     var a = ~~((event.clientY-c.getBoundingClientRect().top)/40);
     var b= ~~((event.clientX-c.getBoundingClientRect().left)/40);
-    var d= +(a+""+b);
-    console.log(`B*40(X)${b*40}A*40(Y)${a*40}`);
+    var d= 10*a+b;
     if(!(this.state.squares[d][2]||this.props.winner)){
       this.setState(prevState=>{prevState.squares[d][2]=this.props.nextMove; return {squares:prevState.squares}});
       ct.fillText(this.props.nextMove,b*40+17,a*40+25);
@@ -38,7 +37,8 @@ class Grid extends Component{
   }
   render(){
     return(
-      <canvas className="canvas" ref="canvas" width="400" height="400"
+      <canvas className="canvas" ref="canvas" width={this.props.width*40+""}
+        height={this.props.height*40+""}
       onClick={this.handleClick}/>
     )
   }

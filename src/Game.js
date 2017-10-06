@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import Grid from './Grid.js';
+import InputSize from './InputSize.js';
 
 class Game extends Component{
   constructor(props){
     super(props);
     this.changePlayer = this.changePlayer.bind(this);
     this.checkWinner = this.checkWinner.bind(this);
-    this.state={next:"",winner:""};
+    this.state={next:"",
+      winner:"",
+      width:15,
+      height:15};
   }
   componentDidMount(){
     this.setState({next:(()=>Math.round(Math.random())?"X":"O")()})
@@ -39,9 +43,11 @@ class Game extends Component{
   render(){
     return(
       <div>
-        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}/>
+        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
+          width={this.state.width} height={this.state.height}/>
         <p>Next move: {this.state.next}</p>
         <p>Winner: {this.state.winner}</p>
+        <InputSize height = {this.state.height} width = {this.state.width}/>
       </div>
     )
   }
