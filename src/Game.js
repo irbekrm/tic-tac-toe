@@ -39,7 +39,7 @@ class Game extends Component{
   render(){
     return(
       <div>
-        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}/>
+        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}/>
         <p>Next move: {this.state.next}</p>
         <p>Winner: {this.state.winner}</p>
       </div>
