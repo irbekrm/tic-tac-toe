@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Grid from './Grid.js';
-import InputSize from './InputSize.js';
 
 class Game extends Component{
   constructor(props){
@@ -43,11 +42,10 @@ class Game extends Component{
   render(){
     return(
       <div>
-        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
-          width={this.state.width} height={this.state.height}/>
         <p>Next move: {this.state.next}</p>
         <p>Winner: {this.state.winner}</p>
-        <InputSize height = {this.state.height} width = {this.state.width}/>
+        <Grid nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
+          width={this.state.width} height={this.state.height}/>
       </div>
     )
   }

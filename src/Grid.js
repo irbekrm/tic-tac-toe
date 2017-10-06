@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import './index.css';
+import InputSize from './InputSize.js';
 
 class Grid extends Component{
   constructor(props){
@@ -37,9 +38,13 @@ class Grid extends Component{
   }
   render(){
     return(
-      <canvas className="canvas" ref="canvas" width={this.props.width*40+""}
-        height={this.props.height*40+""}
-      onClick={this.handleClick}/>
+      <div>
+        <canvas className="canvas" ref="canvas" width={this.props.width*40+""}
+          height={this.props.height*40+""}
+        onClick={this.handleClick}/>
+        <InputSize height={this.props.height}
+          width={this.props.width}/>
+      </div>
     )
   }
 };
