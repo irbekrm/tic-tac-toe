@@ -7,6 +7,7 @@ class Grid extends Component{
   constructor(props){
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.reset = this.reset.bind(this);
     this.state = {squares: (_=>{var s=[];
       for(let i = 0; i < this.props.width; i++){
         for(let j = 0; j< this.props.height; j++) s.push([i*40,j*40,""])
@@ -36,6 +37,23 @@ class Grid extends Component{
       this.props.onClick();
     }
   }
+  reset(){
+    let a = document.getElementById("height").value;
+    let b = document.getElementById("width").value;
+    let c = findDOMNode(this.refs.canvas);
+    let ct = c.getContext("2d");
+    c.height = a * 40;
+    c.width = b * 40;
+    let newSquares = (_=>{var s = [];
+      for(let i = 0; i < b; i++){
+        for(let j = 0; j < a; j++) s.push([i*40,j*40,""])
+      }; return s})();
+    this.setState({squares: newSquares});
+    newSquares.forEach(square=>{
+      ct.beginPath();
+      ct.strokeRect(square[0],square[1],40,40)
+    });
+  }
   render(){
     return(
       <div>
@@ -43,7 +61,10 @@ class Grid extends Component{
           height={this.props.height*40+""}
         onClick={this.handleClick}/>
         <InputSize height={this.props.height}
-          width={this.props.width}/>
+          width={this.props.width}
+          onWidthChange={this.setNextWidth}
+          onHeightChange={this.setNextHeight}/>
+        <button onClick={this.reset}>Reset</button>
       </div>
     )
   }

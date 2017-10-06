@@ -8,8 +8,8 @@ class Game extends Component{
     this.checkWinner = this.checkWinner.bind(this);
     this.state={next:"",
       winner:"",
-      width:15,
-      height:15};
+      width:13,
+      height:13};
   }
   componentDidMount(){
     this.setState({next:(()=>Math.round(Math.random())?"X":"O")()})
