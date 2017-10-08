@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import Grid from './Grid.js';
 import Score from './Score.js';
-import RandGen from './RandGen.js';
+import randGen from './RandGen.js';
+import playersNames from './RandGen.js';
+import {findDOMNode} from 'react-dom';
+import './index.css';
 
 class Game extends Component{
   constructor(props){
@@ -10,26 +13,33 @@ class Game extends Component{
     this.checkWinner = this.checkWinner.bind(this);
     this.reset = this.reset.bind(this);
     this.state = {
-      next:"",
+      next:0,
+      order: [],
+      score:{},
       winner:"",
       width:13,
       height:13,
-      score:{"X":0,"O":0}
+      numOfPlayers:2
     };
   }
   componentDidMount(){
-    this.setState({next: RandGen(2)[0]});
+    const players = randGen(this.state.numOfPlayers);
+    this.setState({order: players,
+      score: (obj => {players.forEach(e => obj[e] = 0); return obj})({})});
   }
 
   /*
    * changePlayer function - sets the state blablabla
   */
   changePlayer = () => {
-    this.setState(prevState=>({next:(()=>prevState.next==="X"?"O":"X")()}));
+    this.setState(prevState => ({next: (prevState.next + 1) % prevState.order.length}))
   }
-
+ changeNumOfPlayers = () =>{
+   this.setState({numOfPlayers: this.refs.players.value})
+}
   checkWinner(a,x,v){
     // creating mapper to blablabla
+    console.log("Score is",this.state.score)
     const mapper=indices=>indices.map(e=>a[e]?a[e][2]?a[e][2]:"D":"");
     let one=a.slice(x-4,x).map(e=>e[2]?e[2]:"D").concat(v,a.slice(x+1,x+5).map(e=>e[2]?e[2]:"D")).join("");
     let b2=[], e2=[], b3=[], e3=[], b4=[], e4=[];
@@ -55,16 +65,15 @@ class Game extends Component{
       //     [x]: this.state.score[x] + 1
       //   }
       // });
-    console.log(`v: ${v}, this.state.score: ${this.state.score}, this.state.score[v]: ${this.state.score[v]}`)
   };
 
   reset(){
+    let players = randGen(this.state.numOfPlayers);
     this.setState({
       winner: "",
-      //irbe's original:
-      // next:(()=>Math.round(Math.random())?"X":"O")()
-      next: Math.round(Math.random()) ? "X" : "O"
-      //next: playersNames[~~(Math.random()*playersNames.length)]
+      next: 0,
+      order: players,
+      score: (obj => {players.forEach(e => obj[e] = this.state.score[e] || 0); return obj})({})
     });
   }
 
@@ -72,11 +81,16 @@ class Game extends Component{
     return(
       <div>
         <p id="top">
-          <p>Next move: {this.state.next}</p>
+          <label for="players">Choose the number of players (2 - 5): </label>
+          <input type="number" ref="players" id="players" placeholder={this.state.numOfPlayers}
+          min="2" max="5" onChange={this.changeNumOfPlayers}/>
+          <p>Current players: {this.state.order}</p>
+          <button id="start" onClick={this.changeNumOfPlayers}>Start</button>
+          <p>Next move: {this.state.order[this.state.next]}</p>
           <p>Winner: {this.state.winner}</p>
-          <Score x={this.state.score.X} o={this.state.score.O}/>
+          <Score players={this.state.order} score={this.state.score}/>
         </p>
-        <Grid id="grid" nextMove={this.state.next} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
+        <Grid id="grid" nextMove={this.state.order[this.state.next]} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
           width={this.state.width} height={this.state.height}
           reset={this.reset}/>
       </div>

@@ -1,18 +1,10 @@
 import React from 'react';
+import './index.css';
 
 //TODO refactor for props to handle both an array of names and score or an array of objects
 
-const Score = props => (
-  <table id="score">
-    <caption>Score</caption>
-    <tr>
-      <th>X</th> {/*TODO refactor with flexbox, add mapping*/}
-      <th>O</th>
-    </tr>
-    <tr>
-      <td>{props.x}</td>
-      <td>{props.o}</td>
-    </tr>
-  </table>);
-
+export const Name = props => <p>{props.player}</p>
+export const Points = props => <p className={props.player}>{props.score}</p>
+const Score = props => <div className="score">{[...props.players].map(e=>(<div>
+  <Name player = {e}/><Points player={e} score={props.score[e]}/></div>))}</div>
 export default Score;

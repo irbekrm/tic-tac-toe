@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import './index.css';
 import InputSize from './InputSize.js';
+import './index.css';
 
 class Grid extends Component{
   constructor(props){

@@ -4,16 +4,8 @@
 th,td {
   border: 2px solid black;
 }
-
-#top {
+.score{
+  color: red;
   display: flex;
-  justify-content: space-around;
-}
-
-#grid {
-  display:flex;
-}
-.right {
-}
-.all{
+  /*flex-direction: row;*/
 }
