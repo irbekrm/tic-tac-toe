@@ -38,8 +38,8 @@ class Grid extends Component{
     }
   }
   reset(){
-    let a = document.getElementById("height").value;
-    let b = document.getElementById("width").value;
+    let a = document.getElementById("height").value ||this.props.height;
+    let b = document.getElementById("width").value ||this.props.width;
     let c = findDOMNode(this.refs.canvas);
     let ct = c.getContext("2d");
     c.height = a * 40;
@@ -53,18 +53,20 @@ class Grid extends Component{
       ct.beginPath();
       ct.strokeRect(square[0],square[1],40,40)
     });
+    this.props.reset();
   }
   render(){
     return(
-      <div>
-        <canvas className="canvas" ref="canvas" width={this.props.width*40+""}
+      <div id="all">
+        <button  id="newgame" className="right" onClick={this.reset}>New Game</button>
+        <canvas id="canvas" className="canvas" ref="canvas" width={this.props.width*40+""}
           height={this.props.height*40+""}
         onClick={this.handleClick}/>
-        <InputSize height={this.props.height}
+        <InputSize class="right" height={this.props.height}
           width={this.props.width}
           onWidthChange={this.setNextWidth}
           onHeightChange={this.setNextHeight}/>
-        <button onClick={this.reset}>Reset</button>
+        <button class="right" onClick={this.reset}>Reset</button>
       </div>
     )
   }

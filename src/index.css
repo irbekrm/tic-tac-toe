@@ -1,6 +1,19 @@
-.canvas{
+.canvas {
   border: 2px solid black;
 }
-th,td{
+th,td {
   border: 2px solid black;
+}
+
+#top {
+  display: flex;
+  justify-content: space-around;
+}
+
+#grid {
+  display:flex;
+}
+.right {
+}
+.all{
 }
