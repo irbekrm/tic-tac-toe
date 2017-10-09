@@ -11,7 +11,7 @@
 }
 .whole {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
 }
 .header1, .header2, .header3 {
@@ -23,6 +23,7 @@
   justify-content: space-around;
 }
 .hidden {
+  display: none;
 }
 .label, .input {
   display: flex;
