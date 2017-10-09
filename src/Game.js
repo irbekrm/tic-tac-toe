@@ -19,7 +19,8 @@ class Game extends Component{
       winner:"",
       width:13,
       height:13,
-      numOfPlayers:2
+      numOfPlayers:2,
+      update: false,
     };
   }
   componentDidMount(){
@@ -34,12 +35,12 @@ class Game extends Component{
   changePlayer = () => {
     this.setState(prevState => ({next: (prevState.next + 1) % prevState.order.length}))
   }
- changeNumOfPlayers = () =>{
+ changeNumOfPlayers = () => {
    this.setState({numOfPlayers: this.refs.players.value})
 }
   checkWinner(a,x,v){
     // creating mapper to blablabla
-    console.log("Score is",this.state.score)
+    console.log(`Height: ${this.state.height}, width: ${this.state.width}`);
     const mapper=indices=>indices.map(e=>a[e]?a[e][2]?a[e][2]:"D":"");
     let one=a.slice(x-4,x).map(e=>e[2]?e[2]:"D").concat(v,a.slice(x+1,x+5).map(e=>e[2]?e[2]:"D")).join("");
     let b2=[], e2=[], b3=[], e3=[], b4=[], e4=[];
@@ -68,31 +69,42 @@ class Game extends Component{
   };
 
   reset(){
-    let players = randGen(this.state.numOfPlayers);
+    let players = randGen(this.refs.players.value || this.state.numOfPlayers);
     this.setState({
+      numOfPlayers: this.refs.players.value || this.state.numOfPlayers,
       winner: "",
       next: 0,
       order: players,
-      score: (obj => {players.forEach(e => obj[e] = this.state.score[e] || 0); return obj})({})
+      score: (obj => {players.forEach(e => obj[e] = this.state.score[e] || 0); return obj})({}),
+      width: this.refs.width.value || this.state.width,
+      heigth: this.refs.height.value || this.state.height,
+      update: true
+
     });
   }
+  updateToFalse = _ => this.setState({update: false})
 
   render(){
     return(
       <div>
-        <p id="top">
-          <label for="players">Choose the number of players (2 - 5): </label>
-          <input type="number" ref="players" id="players" placeholder={this.state.numOfPlayers}
+          <label>Choose the number of players (2 - 5): </label>
+          <input type="number" ref="players" placeholder={this.state.numOfPlayers}
           min="2" max="5" onChange={this.changeNumOfPlayers}/>
+          <label>Change the height of the canvas (5 - 100 squares): </label>
+          <input ref="height"placeholder={this.state.height}/>
+          <label>Change the width of the canvas (5 - 100 squares)</label>
+          <input ref="width" placeholder={this.state.width}/>
           <p>Current players: {this.state.order}</p>
-          <button id="start" onClick={this.changeNumOfPlayers}>Start</button>
+          <button onClick={this.reset}>Start</button>
           <p>Next move: {this.state.order[this.state.next]}</p>
           <p>Winner: {this.state.winner}</p>
           <Score players={this.state.order} score={this.state.score}/>
-        </p>
-        <Grid id="grid" nextMove={this.state.order[this.state.next]} onClick={this.changePlayer} check={this.checkWinner}winner={this.state.winner}
-          width={this.state.width} height={this.state.height}
-          reset={this.reset}/>
+          <button onClick={this.reset}>Reset</button>
+          <Grid id="grid"
+            nextMove={this.state.order[this.state.next]} onClick={this.changePlayer}
+            check={this.checkWinner}winner={this.state.winner}
+            width={this.state.width} height={this.state.height}
+            update={this.state.update} updateToFalse={this.updateToFalse}/>
       </div>
     )
   }

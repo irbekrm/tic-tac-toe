@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import './index.css';
-import InputSize from './InputSize.js';
-import './index.css';
 
 class Grid extends Component{
   constructor(props){
@@ -12,8 +10,7 @@ class Grid extends Component{
     this.state = {squares: (_=>{var s=[];
       for(let i = 0; i < this.props.width; i++){
         for(let j = 0; j< this.props.height; j++) s.push([i*40,j*40,""])
-      }; return s})(),
-      ctx: null
+      }; return s})()
   }
 }
   componentDidMount(){
@@ -23,7 +20,12 @@ class Grid extends Component{
       ct.beginPath();
       ct.strokeRect(square[0],square[1],40,40)
     });
-    this.setState({ctx: ct});
+  }
+  componentDidUpdate(){
+    if(this.props.update){
+      this.reset();
+      this.props.updateToFalse();
+    }
   }
   handleClick(event){
     var c = findDOMNode(this.refs.canvas);
@@ -39,8 +41,8 @@ class Grid extends Component{
     }
   }
   reset(){
-    let a = document.getElementById("height").value ||this.props.height;
-    let b = document.getElementById("width").value ||this.props.width;
+    let a = this.props.height;
+    let b = this.props.width;
     let c = findDOMNode(this.refs.canvas);
     let ct = c.getContext("2d");
     c.height = a * 40;
@@ -54,20 +56,13 @@ class Grid extends Component{
       ct.beginPath();
       ct.strokeRect(square[0],square[1],40,40)
     });
-    this.props.reset();
   }
   render(){
     return(
-      <div id="all">
-        <button  id="newgame" className="right" onClick={this.reset}>New Game</button>
+      <div>
         <canvas id="canvas" className="canvas" ref="canvas" width={this.props.width*40+""}
           height={this.props.height*40+""}
         onClick={this.handleClick}/>
-        <InputSize class="right" height={this.props.height}
-          width={this.props.width}
-          onWidthChange={this.setNextWidth}
-          onHeightChange={this.setNextHeight}/>
-        <button class="right" onClick={this.reset}>Reset</button>
       </div>
     )
   }
