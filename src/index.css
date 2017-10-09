@@ -1,11 +1,45 @@
 .canvas {
   border: 2px solid black;
 }
-th,td {
-  border: 2px solid black;
-}
-.score{
-  color: red;
+.page {
   display: flex;
-  /*flex-direction: row;*/
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  justify-content: center;
+}
+.whole {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.header1, .header2, .header3 {
+  display: flex;
+  justify-content: center;
+}
+.setup1, .setup2, .setup3 {
+  display:flex;
+  justify-content: space-around;
+}
+.hidden {
+}
+.label, .input {
+  display: flex;
+  flex: auto;
+}
+.reset1,.reset2 {
+  display: flex;
+}
+.resetButton {
+  align-self:center;
+}
+.innerScore {
+  display: flex;
+}
+.score {
+  display: flex;
+  flex-direction:column;
+}
+button {
 }

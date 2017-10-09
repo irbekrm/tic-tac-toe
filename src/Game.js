@@ -39,8 +39,8 @@ class Game extends Component{
    this.setState({numOfPlayers: this.refs.players.value})
 }
   checkWinner(a,x,v){
+    console.log("Start button: ",this.refs.startButton.className+="hidden");
     // creating mapper to blablabla
-    console.log(`Height: ${this.state.height}, width: ${this.state.width}`);
     const mapper=indices=>indices.map(e=>a[e]?a[e][2]?a[e][2]:"D":"");
     let one=a.slice(x-4,x).map(e=>e[2]?e[2]:"D").concat(v,a.slice(x+1,x+5).map(e=>e[2]?e[2]:"D")).join("");
     let b2=[], e2=[], b3=[], e3=[], b4=[], e4=[];
@@ -68,6 +68,13 @@ class Game extends Component{
       // });
   };
 
+  start = _ => {
+    this.hide(this.refs.startButton);
+    this.show(this.refs.playButton, this.refs.resetContainer,
+      this.refs.infoContainer);
+    this.reset();
+  }
+
   reset(){
     let players = randGen(this.refs.players.value || this.state.numOfPlayers);
     this.setState({
@@ -81,30 +88,66 @@ class Game extends Component{
       update: true
 
     });
+    this.hide(this.refs.playButton);
+    this.show(this.refs.startButton);
   }
-  updateToFalse = _ => this.setState({update: false})
+
+  updateToFalse = _ => this.setState({update: false});
+
+  show = (...elements) => {elements.forEach(e => e.className =
+    e.className.replace(/hidden/,""));
+    elements.forEach(e => console.log(e))};
+
+  hide = (...elements) => elements.forEach(e => e.className += "hidden");
 
   render(){
     return(
-      <div>
-          <label>Choose the number of players (2 - 5): </label>
-          <input type="number" ref="players" placeholder={this.state.numOfPlayers}
-          min="2" max="5" onChange={this.changeNumOfPlayers}/>
-          <label>Change the height of the canvas (5 - 100 squares): </label>
-          <input ref="height"placeholder={this.state.height}/>
-          <label>Change the width of the canvas (5 - 100 squares)</label>
-          <input ref="width" placeholder={this.state.width}/>
-          <p>Current players: {this.state.order}</p>
-          <button onClick={this.reset}>Start</button>
-          <p>Next move: {this.state.order[this.state.next]}</p>
-          <p>Winner: {this.state.winner}</p>
-          <Score players={this.state.order} score={this.state.score}/>
-          <button onClick={this.reset}>Reset</button>
-          <Grid id="grid"
-            nextMove={this.state.order[this.state.next]} onClick={this.changePlayer}
-            check={this.checkWinner}winner={this.state.winner}
-            width={this.state.width} height={this.state.height}
-            update={this.state.update} updateToFalse={this.updateToFalse}/>
+      <div className="page">
+        <h1 className="header">TIC - TAC - TOE</h1>
+      <div className="whole">
+      <div className="grid">
+        <Grid
+        nextMove={this.state.order[this.state.next]} onClick={this.changePlayer}
+        check={this.checkWinner}winner={this.state.winner}
+        width={this.state.width} height={this.state.height}
+        update={this.state.update} updateToFalse={this.updateToFalse}/>
+      </div>
+      <div className="notGrid">
+        <h3 className="header1">SETUP (optional)</h3>
+        <div className="setup1">
+        <div className="label">Choose the number of players (2 - 5): </div>
+        <input className="input" type="number" ref="players" placeholder={this.state.numOfPlayers}
+          min="2" max="5" onChange={this.changeNumOfPlayers}/></div>
+        <div className="setup2">
+            <div className="label">Change the height of the canvas (5 - 100 squares): </div>
+            <input className="input" ref="height"placeholder={this.state.height}/>
+        </div>
+        <div className="setup3">
+            <div className="label">Change the width of the canvas (5 - 100 squares): </div>
+            <input className="input" ref="width" placeholder={this.state.width}/>
+        </div>
+            <button onClick={this.start} ref="startButton">Start</button>
+            <button className="hidden" ref="playButton">Play again</button>
+            <div className="reset1">
+              <button className="resetButton" onClick={this.reset}>Reset 1</button>
+              <p>-{' '}(Partial reset- reset the number of players and size of grid,
+                keep the score)</p>
+            </div>
+              <div className="reset2">
+              <button className="resetButton">Reset 2</button>
+              <p>-{' '}(Complete reset- reset the number of players, the size of
+                the grid and the score)</p>
+              </div>
+            <h3 className="header3">INFO </h3>
+            <div>Current players: {[...this.state.order].join(", ")}</div>
+            <div>Next move: {this.state.order[this.state.next]}</div>
+            <div>Winner: {this.state.winner}</div>
+            <div className="scoreTable">
+            <h3 className="header3">SCORE</h3>
+            <Score players={this.state.order} score={this.state.score}/>
+            </div>
+            </div>
+        </div>
       </div>
     )
   }
