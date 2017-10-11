@@ -17,8 +17,7 @@ class Game extends Component{
       order: [],
       score:{},
       winner:"",
-      width:13,
-      height:13,
+      size: 12,
       numOfPlayers:2,
       update: false,
     };
@@ -65,13 +64,8 @@ class Game extends Component{
       //     [x]: this.state.score[x] + 1
       //   }
       // });
-  };
 
-  start = _ => {
-    this.hide(this.refs.startButton);
-    this.show(this.refs.playButton, this.refs.hiddenContainer);
-    this.reset();
-  }
+  };
   playAgain = _ => {
     this.setState({winner: "", update: true, next: 0});
   }
@@ -83,12 +77,22 @@ class Game extends Component{
       next: 0,
       order: players,
       score: (obj => {players.forEach(e => obj[e] = this.state.score[e] || 0); return obj})({}),
-      width: this.refs.width.value || this.state.width,
-      heigth: this.refs.height.value || this.state.height,
-      update: true
+      size: this.refs.size.value || this.state.size,
+      update: true,
+      before: ""});
+  };
 
-    });
-  }
+
+  toggleVisibility = el => {/hidden/.test(el.className) ?
+    el.className = el.className.replace(/hidden/,"") :
+    (el.className += " hidden");
+    el === this.refs.optionsOuter &&
+    this.hideIfNotHidden(this.refs.optionsInner) &&
+    this.hideIfNotHidden(this.refs.infoContainer)}
+
+  hideIfNotHidden = el => {!(/hidden/.test(el.className)) &&
+    (el.className += " hidden"); return true}
+
   completeReset = _ => {
     let players = randGen(this.refs.players.value ||this.state.numOfPlayers);
     this.setState({
@@ -97,72 +101,57 @@ class Game extends Component{
       next: 0,
       order: players,
       score: (obj => {players.forEach(e => obj[e] = 0); return obj})({}),
-      width: this.refs.width.value || this.state.width,
-      height: this.refs.height.value || this.state.height,
+      size: this.refs.size.value || this.state.size,
       update: true
     });
   }
 
   updateToFalse = _ => this.setState({update: false});
 
-  show = (...elements) => elements.forEach(e => e.className =
-    e.className.replace(/hidden/,""));
-
-  hide = (...elements) => elements.forEach(e => e.className += "hidden");
-
   render(){
     return(
-      <div className="page">
-        <h1 className="header">TIC - TAC - TOE</h1>
-        <div className="whole">
-          <div className="grid">
-            <Grid
-              nextMove={this.state.order[this.state.next]} onClick={this.changePlayer}
-              check={this.checkWinner}winner={this.state.winner}
-              width={this.state.width} height={this.state.height}
-              update={this.state.update} updateToFalse={this.updateToFalse}/>
+      <div className="wrapper">
+        <div className="header">TIC - TAC - TOE</div>
+        <div className="main">
+          <div className="bar">
+            <div onClick={()=>this.toggleVisibility(this.refs.optionsOuter)}
+              className="menu">&#9776;</div>
+            <div className="options hidden" ref="optionsOuter">
+              <div ref="playButton" className="play underline" onClick={this.play}>PLAY</div>
+              <div ref="infoButton" className="info underline" onClick={
+                ()=>this.toggleVisibility(this.refs.infoContainer)}>INFO</div>
+              <div className="optionsContainer hidden" ref="infoContainer">
+                <div className="infoOuter">PLAYERS: {[...this.state.order].join(", ")}</div>
+                <div className="outerScore"><div className="infoOuter">SCORE:</div>
+                <Score className="infoInner" players={this.state.order} score={this.state.score}/>
+              </div></div>
+              <div onClick={()=>this.toggleVisibility(this.refs.optionsInner)}
+                className="reset underline">RESET</div>
+                <div className="optionsContainer hidden"ref="optionsInner">
+                  <div className="wrapper1">
+                    <div className="label1">NUMBER OF PLAYERS<br></br>
+                      (2 to 5 players)</div>
+                    <div className="input"><input type="number" ref="players"
+                      placeholder={this.state.numOfPlayers}
+                      min="2" max="5" onChange={this.changeNumOfPlayers}/></div></div>
+                  <div className="wrapper2">
+                    <div className="label2">SIZE OF THE GRID<br></br>(5 to 20 squares per side)</div>
+                    <div className="input"><input type="number" className="input2" min="5" max="20" ref="size" placeholder={this.state.size}/></div>
+                 </div>
+                 <div className="label3 underline">RESET THE SCORE</div>
+              </div>
+            </div>
           </div>
-          <div className="notGrid">
-            <h3 className="header1">SETUP (optional)</h3>
-            <div className="setup1">
-              <div className="label">Choose the number of players (2 - 5):</div>
-              <input className="input" type="number" ref="players"
-                placeholder={this.state.numOfPlayers}
-                min="2" max="5" onChange={this.changeNumOfPlayers}/></div>
-           <div className="setup2">
-             <div className="label">Change the height of the canvas (5 - 100 squares): </div>
-             <input className="input" ref="height"placeholder={this.state.height}/>
+            <div className="grid">
+              <Grid
+                nextMove={this.state.order[this.state.next]} onClick={this.changePlayer}
+                check={this.checkWinner}winner={this.state.winner}
+                size={this.state.size}
+                update={this.state.update} updateToFalse={this.updateToFalse}
+                before={this.state.before}/>
+            </div>
           </div>
-          <div className="setup3">
-            <div className="label">Change the width of the canvas (5 - 100 squares): </div>
-            <input className="input" ref="width" placeholder={this.state.width}/>
-          </div>
-          <button onClick={this.start} ref="startButton">Start</button>
-          <button className="hidden" ref="playButton"
-            onClick={this.playAgain}>Play again</button>
-          <div className="hidden" ref="hiddenContainer">
-          <div className="reset1">
-            <button className="resetButton" onClick={this.reset}>Reset 1</button>
-            <p>-{' '}(Partial reset- reset the number of players and size of grid,
-              keep the score)</p>
-          </div>
-          <div className="reset2">
-            <button className="resetButton" onClick={this.completeReset}>Reset 2</button>
-            <p>-{' '}(Complete reset- reset the number of players, the size of
-              the grid and the score)</p>
-          </div>
-          <h3 className="header3">INFO </h3>
-          <div>Current players: {[...this.state.order].join(", ")}</div>
-          <div>Next move: {this.state.order[this.state.next]}</div>
-          <div>Winner: {this.state.winner}</div>
-          <div className="scoreTable">
-            <h3 className="header3">SCORE</h3>
-            <Score players={this.state.order} score={this.state.score}/>
-          </div>
-          </div>
-        </div>
       </div>
-    </div>
     )
   }
 }

@@ -1,46 +1,123 @@
+
 .canvas {
   border: 2px solid black;
 }
-.page {
+.wrapper, html, body {
+  height: 100%;
+  margin: 0;
+}
+.wrapper {
   display: flex;
   flex-direction: column;
 }
-.header {
+.main {
+  display: flex;
+  flex: 2;
+  margin-top: 30px;
+}
+.header{
+  padding: 40px;
   display: flex;
   justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
 }
-.whole {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-around;
+.menu {
+  font-size: 60px;
 }
-.header1, .header2, .header3 {
-  display: flex;
-  justify-content: center;
+.menu:hover {
+  cursor: pointer;
+  color: red;
 }
-.setup1, .setup2, .setup3 {
+.outerMenu {
   display:flex;
+
+}
+.bar {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  flex-direction: column;
+  font-size: 30px;
+}
+.grid {
+  flex: 1 1;
+  margin-top:20px;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+  align-self: stretch;
+}
+
+.optionsContainer {
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  align-self: flex-end;
+  flex-grow: 2;
   justify-content: space-around;
 }
-.hidden {
-  display: none;
-}
-.label, .input {
+.grid {
   display: flex;
-  flex: auto;
+  justify-content: center;
+  align-items: center;
 }
-.reset1,.reset2 {
+.innerWrapper {
+  margin: 20px;
+}
+.play, .info, .reset {
   display: flex;
+  justify-content: center;
 }
-.resetButton {
-  align-self:center;
+.wrapper1, .wrapper2 {
+  display: flex;
+  justify-content: space-between;
 }
 .innerScore {
   display: flex;
 }
 .score {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
+  width: 80%;
+  align-self: flex-end;
 }
-button {
+.outerScore {
+  display: flex;
+}
+.label2 {
+  display: flex;
+  flex-grow: 2;
+  width: 80%;
+}
+.input {
+  display: flex;
+  flex-grow: 0;
+  align-self:baseline;
+}
+.info {
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+.play {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.reset {
+  margin-bottom: 15px;
+}
+.hidden {
+  display: none;
+}
+.underline:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: red;
+}
+.input:hover {
+  border: 1px solid red;
 }
