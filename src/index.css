@@ -73,7 +73,7 @@
   display: flex;
   justify-content: center;
 }
-.wrapper1, .wrapper2 {
+.wrapper1, .wrapper2, .wrapper3 {
   display: flex;
   justify-content: space-between;
 }
@@ -120,4 +120,9 @@
 }
 .input:hover {
   border: 1px solid red;
+}
+#resetButton {
+  font-size: 1.1em;
+  margin-left: -20px;
+  margin-top: 20px;
 }

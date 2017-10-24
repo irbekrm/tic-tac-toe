@@ -126,19 +126,23 @@ class Game extends Component{
                 <Score className="infoInner" players={this.state.order} score={this.state.score}/>
               </div></div>
               <div onClick={()=>this.toggleVisibility(this.refs.optionsInner)}
-                className="reset underline">RESET</div>
+                className="reset underline">SETTINGS</div>
                 <div className="optionsContainer hidden"ref="optionsInner">
                   <div className="wrapper1">
                     <div className="label1">NUMBER OF PLAYERS<br></br>
                       (2 to 5 players)</div>
                     <div className="input"><input type="number" ref="players"
                       placeholder={this.state.numOfPlayers}
-                      min="2" max="5" onChange={this.changeNumOfPlayers}/></div></div>
+                      min="2" max="5"/></div></div>
                   <div className="wrapper2">
                     <div className="label2">SIZE OF THE GRID<br></br>(5 to 20 squares per side)</div>
                     <div className="input"><input type="number" className="input2" min="5" max="20" ref="size" placeholder={this.state.size}/></div>
                  </div>
-                 <div className="label3 underline">RESET THE SCORE</div>
+                 <div className="wrapper3">
+                   <div className="label3">CLEAR THE SCORE</div>
+                   <div className="input"><input type="checkbox"/></div>
+                 </div>
+                 <div id="resetButton" className="label3 underline">APPLY CHANGES</div>
               </div>
             </div>
           </div>
