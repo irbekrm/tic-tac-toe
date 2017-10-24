@@ -126,3 +126,14 @@
   margin-left: -20px;
   margin-top: 20px;
 }
+.banner {
+  color: red;
+  display: flex;
+  justify-content: center;
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
+  margin-top: -20px;
+}
+.red {
+  color: red;
+}

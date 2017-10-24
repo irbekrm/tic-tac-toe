@@ -51,12 +51,15 @@ class Grid extends Component{
     var a = ~~((event.clientY-c.getBoundingClientRect().top)/40);
     var b = ~~((event.clientX-c.getBoundingClientRect().left)/40);
     var d = 10*a+b;
-    if(!(this.state.squares[d][2]||this.props.winner)){
+    if(!(this.state.squares[d][2]||this.props.winner || this.props.before)){
       this.setState(prevState=>{prevState.squares[d][2]=this.props.nextMove; return {squares:prevState.squares}});
       ct.font = "20px Arial";
       ct.fillText(this.props.nextMove,b*40+17,a*40+25);
       this.props.onClick();
       this.props.check(this.state.squares,d,this.props.nextMove);
+    }
+    else if (this.props.before) {
+      this.props.alert();
     }
   }
   reset(){

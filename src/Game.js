@@ -3,11 +3,14 @@ import Grid from './Grid.js';
 import Score from './Score.js';
 import randGen from './RandGen.js';
 import playersNames from './RandGen.js';
+import WinnerAlert from './WinnerAlert.js';
+import StartGame from './StartGame.js';
 import {findDOMNode} from 'react-dom';
+import PlayersList from './PlayersList.js';
 import './index.css';
 
 class Game extends Component{
-  
+
   constructor(props){
     super(props);
     this.changePlayer = this.changePlayer.bind(this); //::this.changePlayer;
@@ -21,6 +24,8 @@ class Game extends Component{
       size: 12,
       numOfPlayers:2,
       update: false,
+      alert: false,
+      before: true
     };
   }
   componentDidMount(){
@@ -35,9 +40,9 @@ class Game extends Component{
   changePlayer = () => {
     this.setState(prevState => ({next: (prevState.next + 1) % prevState.order.length}))
   }
- changeNumOfPlayers = () => {
-   this.setState({numOfPlayers: this.refs.players.value})
-}
+
+  raiseAlert = () => this.setState({alert: true})
+
   checkWinner(a,x,v){
     // creating mapper to blablabla
     const mapper=indices=>indices.map(e=>a[e]?a[e][2]?a[e][2]:"D":"");
@@ -68,7 +73,7 @@ class Game extends Component{
 
   };
   play = _ => {
-    this.setState({winner: "", update: true, next: 0});
+    this.setState({winner: "", update: true, next: 0, alert: false, before: false});
   }
   reset(){
 
@@ -87,9 +92,9 @@ class Game extends Component{
 
       size: this.refs.size.value || this.state.size,
       update: true,
-      before: ""});
-  // document.getElementById("resetScore").checked = false;
-  s.checked = false;
+      before: false,
+      alert: false});
+    s.checked = false;
   };
 
 
@@ -110,6 +115,8 @@ class Game extends Component{
     return(
       <div className="wrapper">
         <div className="header">TIC - TAC - TOE</div>
+        <WinnerAlert winner={this.state.winner} />
+        <StartGame alert={this.state.alert} />
         <div className="main">
           <div className="bar">
             <div onClick={()=>this.toggleVisibility(this.refs.optionsOuter)}
@@ -119,7 +126,7 @@ class Game extends Component{
               <div ref="infoButton" className="info underline" onClick={
                 ()=>this.toggleVisibility(this.refs.infoContainer)}>INFO</div>
               <div className="optionsContainer hidden" ref="infoContainer">
-                <div className="infoOuter">PLAYERS: {[...this.state.order].join(", ")}</div>
+                <div className="infoOuter">PLAYERS: <PlayersList order={this.state.order} next={this.state.next}/></div>
                 <div className="outerScore"><div className="infoOuter">SCORE:</div>
                 <Score className="infoInner" players={this.state.order} score={this.state.score}/>
               </div></div>
@@ -150,7 +157,8 @@ class Game extends Component{
                 check={this.checkWinner}winner={this.state.winner}
                 size={this.state.size}
                 update={this.state.update} updateToFalse={this.updateToFalse}
-                before={this.state.before}/>
+                before={this.state.before}
+                alert={()=>this.raiseAlert()}/>
             </div>
           </div>
       </div>
