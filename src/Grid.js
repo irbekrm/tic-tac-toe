@@ -76,7 +76,6 @@ class Grid extends Component{
     });
   }
   render(){
-    console.log("From grid",this.props.size);
     return(
       <div>
         <canvas id="canvas" className="canvas" ref="canvas" width={this.props.size*40+""}

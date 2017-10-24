@@ -66,7 +66,7 @@ class Game extends Component{
       // });
 
   };
-  playAgain = _ => {
+  play = _ => {
     this.setState({winner: "", update: true, next: 0});
   }
   reset(){
