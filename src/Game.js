@@ -7,6 +7,7 @@ import {findDOMNode} from 'react-dom';
 import './index.css';
 
 class Game extends Component{
+  
   constructor(props){
     super(props);
     this.changePlayer = this.changePlayer.bind(this); //::this.changePlayer;
@@ -70,16 +71,25 @@ class Game extends Component{
     this.setState({winner: "", update: true, next: 0});
   }
   reset(){
+
     let players = randGen(this.refs.players.value || this.state.numOfPlayers);
+    let s = document.getElementById("resetScore");
+
     this.setState({
       numOfPlayers: this.refs.players.value || this.state.numOfPlayers,
       winner: "",
       next: 0,
       order: players,
-      score: (obj => {players.forEach(e => obj[e] = this.state.score[e] || 0); return obj})({}),
+      score: (obj => {
+        players.forEach(
+          e => obj[e] = ((s.checked || !this.state.score[e]) ? 0 : this.state.score[e]));
+          return obj})({}),
+
       size: this.refs.size.value || this.state.size,
       update: true,
       before: ""});
+  // document.getElementById("resetScore").checked = false;
+  s.checked = false;
   };
 
 
@@ -93,18 +103,6 @@ class Game extends Component{
   hideIfNotHidden = el => {!(/hidden/.test(el.className)) &&
     (el.className += " hidden"); return true}
 
-  completeReset = _ => {
-    let players = randGen(this.refs.players.value ||this.state.numOfPlayers);
-    this.setState({
-      numOfPlayers: this.refs.players.value || this.state.numOfPlayers,
-      winner: "",
-      next: 0,
-      order: players,
-      score: (obj => {players.forEach(e => obj[e] = 0); return obj})({}),
-      size: this.refs.size.value || this.state.size,
-      update: true
-    });
-  }
 
   updateToFalse = _ => this.setState({update: false});
 
@@ -140,9 +138,9 @@ class Game extends Component{
                  </div>
                  <div className="wrapper3">
                    <div className="label3">CLEAR THE SCORE</div>
-                   <div className="input"><input type="checkbox"/></div>
+                   <div className="input"><input type="checkbox" id="resetScore"/></div>
                  </div>
-                 <div id="resetButton" className="label3 underline">APPLY CHANGES</div>
+                 <div id="resetButton" className="label3 underline" onClick={this.reset}>APPLY CHANGES</div>
               </div>
             </div>
           </div>
